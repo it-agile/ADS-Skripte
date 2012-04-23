@@ -3,7 +3,7 @@
 repo_basename=nerd-golf-tracker
 repo="$HOME/svn/$repo_basename"
 initial_sources=/tmp/it-agile-nerd-golf-tracker.tar.gz
-integration_space="$HOME/integration_space/$repo_basename"
+workspace="$HOME/integration_space/$repo_basename"
 
 # Init repo
 rm -rf "$repo"
@@ -14,34 +14,34 @@ echo "anon-access = write" >> "$repo/conf/svnserve.conf"
 
 
 # Setup dir for importing sources
-rm -rf "$integration_space"
-mkdir -p "$integration_space"
-cd "$integration_space"
+rm -rf "$workspace"
+mkdir -p "$workspace"
+cd "$workspace"
 
 
 # Import initial sources
 wget --output-document="$initial_sources" --no-check-certificate https://github.com/it-agile/nerd-golf-tracker/tarball/master
 tar -xzf "$initial_sources" --strip-components=1
 
-svn import "$integration_space" "file://$repo" -m "Initial commit"
+svn import "$workspace" "file://$repo" -m "Initial commit"
 
 
 # Setup empty integration space
-rm -rf "$integration_space"
-mkdir -p "$integration_space"
-cd "$integration_space"
+rm -rf "$workspace"
+mkdir -p "$workspace"
+cd "$workspace"
 cd ..
 
 svn checkout "file://$repo"
 
 
 # Import ignore settings
-cd "$integration_space"
+cd "$workspace"
 svn propset svn:ignore -F .svnignore .
 svn rm .svnignore
 cd ".settings"
 svn propset svn:ignore -F .svnignore .
 svn rm .svnignore
 
-cd "$integration_space"
+cd "$workspace"
 svn ci -m "Ignore build and IDE artifacts"

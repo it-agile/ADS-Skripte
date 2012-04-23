@@ -9,11 +9,15 @@ integration_space="$HOME/integration_space/$repo_basename"
 rm -rf "$repo"
 mkdir -p "$repo"
 svnadmin create "$repo"
+echo "[general]" > "$repo/conf/svnserve.conf"
+echo "anon-access = write" >> "$repo/conf/svnserve.conf"
+
 
 # Setup dir for importing sources
 rm -rf "$integration_space"
 mkdir -p "$integration_space"
 cd "$integration_space"
+
 
 # Import initial sources
 wget --output-document="$initial_sources" --no-check-certificate https://github.com/it-agile/nerd-golf-tracker/tarball/master

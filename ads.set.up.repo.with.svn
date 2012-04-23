@@ -34,3 +34,14 @@ cd ..
 
 svn checkout "file://$repo"
 
+
+# Import ignore settings
+cd "$integration_space"
+svn propset svn:ignore -F .svnignore .
+svn rm .svnignore
+cd ".settings"
+svn propset svn:ignore -F .svnignore .
+svn rm .svnignore
+
+cd "$integration_space"
+svn ci -m "Ignore build and IDE artifacts"

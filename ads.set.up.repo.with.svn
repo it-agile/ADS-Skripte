@@ -1,0 +1,32 @@
+#!/bin/bash
+
+repo_basename=nerd-golf-tracker
+repo="$HOME/svn/$repo_basename"
+initial_sources=/tmp/it-agile-nerd-golf-tracker.tar.gz
+integration_space="$HOME/integration_space/$repo_basename"
+
+# Init repo
+rm -rf "$repo"
+mkdir -p "$repo"
+svnadmin create "$repo"
+
+# Setup dir for importing sources
+rm -rf "$integration_space"
+mkdir -p "$integration_space"
+cd "$integration_space"
+
+# Import initial sources
+wget --output-document="$initial_sources" --no-check-certificate https://github.com/it-agile/nerd-golf-tracker/tarball/master
+tar -xzf "$initial_sources" --strip-components=1
+
+svn import "$integration_space" "file://$repo" -m "Initial commit"
+
+
+# Setup empty integration space
+rm -rf "$integration_space"
+mkdir -p "$integration_space"
+cd "$integration_space"
+cd ..
+
+svn checkout "file://$repo"
+

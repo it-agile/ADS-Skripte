@@ -45,16 +45,16 @@ if [ ! -d "$1" ]; then
     cecho "Where is the source, dude?" $red
     exit 1
 fi
-target="$1"
+working_area="$1"
 
 start_step "Remove everything but the source"
-cd "$target"
+cd "$working_area"
 git clean -xdf
 rm -rf .git .gitignore
 cd ..
 finish_step
 
 start_step "Pack"
-archive=$(basename "$1")
-tar czf "$archive.tar.gz" "$1"
+archive=$(basename "$working_area")
+tar czf "$archive.tar.gz" "$working_area"
 finish_step

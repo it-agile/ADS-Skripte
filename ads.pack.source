@@ -47,14 +47,19 @@ if [ ! -d "$1" ]; then
 fi
 working_area="$1"
 
-start_step "Remove everything but the source"
+archive_name_without_extension=$(basename "$working_area")
+if [ "$2" ]; then
+    archive_name_without_extension="$2"
+fi
+
+start_step "Remove everything but the source from $working_area"
 cd "$working_area"
 git clean -xdf
 rm -rf .git .gitignore
 cd ..
 finish_step
 
-start_step "Pack"
-archive=$(basename "$working_area")
-tar czf "$archive.tar.gz" "$working_area"
+archive_name="$archive_name_without_extension.tar.gz"
+start_step "Pack source into $archive_name"
+tar czf "$archive_name" "$working_area"
 finish_step

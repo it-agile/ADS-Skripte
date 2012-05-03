@@ -30,12 +30,6 @@ function cecho () {
     reset_colors
 }
 
-if [ ! -d "$1" ]; then
-    cecho "Where is the source, dude?" $red
-    exit 1
-fi
-target="$1"
-
 function start_step() {
     local message="$1"
     cecho "$message …" $white
@@ -44,6 +38,14 @@ function finish_step() {
     cecho "Done." $green
     echo
 }
+
+
+
+if [ ! -d "$1" ]; then
+    cecho "Where is the source, dude?" $red
+    exit 1
+fi
+target="$1"
 
 start_step "Remove everything but the source"
 cd "$target"

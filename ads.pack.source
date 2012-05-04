@@ -39,6 +39,19 @@ function finish_step() {
     echo
 }
 
+function remove_non_vcs_artifacts() {
+    if [ ! -d .git ]; then
+        git init .
+    fi
+    git clean -Xdf
+}
+function remove_git_artifacts() {
+    rm -rf .git .gitignore
+}
+function remove_svn_artifacts() {
+    rm -rf `find . -d -name .svn`
+}
+
 
 
 if [ ! -d "$1" ]; then
@@ -54,9 +67,9 @@ fi
 
 start_step "Remove everything but the source from $working_area"
 cd "$working_area"
-git clean -xdf
-rm -rf .git .gitignore
-rm -rf `find . -d -name .svn`
+remove_non_vcs_artifacts
+remove_git_artifacts
+remove_svn_artifacts
 cd ..
 finish_step
 

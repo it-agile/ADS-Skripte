@@ -70,7 +70,7 @@ cd "$working_area"
 remove_non_vcs_artifacts
 remove_git_artifacts
 remove_svn_artifacts
-cd ..
+cd -
 finish_step
 
 archive_name="$archive_name_without_extension.tar.gz"

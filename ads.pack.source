@@ -56,6 +56,7 @@ start_step "Remove everything but the source from $working_area"
 cd "$working_area"
 git clean -xdf
 rm -rf .git .gitignore
+rm -rf `find . -d -name .svn`
 cd ..
 finish_step
 

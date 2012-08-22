@@ -48,7 +48,7 @@ svn ci -m "Ignore build and IDE artifacts"
 
 
 # Set this machine as repository
-local_ip=$(ifconfig wlan0 | grep "inet addr" | awk -F: '{print $2}' | awk '{print $1}')
+local_ip="<IP-Adresse"
 sed -i -e "s/mavenCentral()/maven { url 'http:\/\/$local_ip:8081\/nexus\/content\/groups\/public' }/" build.gradle
 svn ci -m "Use integration machine as artifact repository"
 

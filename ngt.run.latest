@@ -1,0 +1,6 @@
+#!/bin/bash
+
+jar_name="nerd-golf-tracker.jar"
+wget -O $jar_name 'http://10.42.0.1:8081/nexus/service/local/artifact/maven/redirect?r=snapshots&g=de.itagile.golf&a=nerd-golf-tracker&v=1.0-SNAPSHOT&p=jar' -o log
+java -jar $jar_name
+

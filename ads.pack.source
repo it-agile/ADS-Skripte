@@ -46,7 +46,7 @@ function remove_non_vcs_artifacts() {
     git clean -Xdf
 }
 function remove_git_artifacts() {
-    rm -rf .git .gitignore
+    rm -rf .git .gitignore .gitattributes
 }
 function remove_svn_artifacts() {
     rm -rf `find . -type d -name .svn`

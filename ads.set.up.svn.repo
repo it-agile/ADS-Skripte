@@ -52,3 +52,7 @@ local_ip="<IP-Adresse>"
 sed -i -e "s/localhost/$local_ip/" build.gradle
 svn ci -m "Use integration machine as artifact repository"
 
+
+# Remove Nexus artifacts
+rm ~/local/sonatype-work/nexus/storage/snapshots/de/itagile/golf/nerd-golf-tracker/1.0-SNAPSHOT/*
+

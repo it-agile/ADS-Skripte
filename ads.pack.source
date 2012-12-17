@@ -58,7 +58,7 @@ if [ ! -d "$1" ]; then
     cecho "Where is the source, dude?" $red
     exit 1
 fi
-working_area="$1"
+working_area="$(dirname "$1")/$(basename "$1")"
 
 archive_name_without_extension=$(basename "$working_area")
 if [ "$2" ]; then

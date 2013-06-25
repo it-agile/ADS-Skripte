@@ -54,5 +54,7 @@ svn ci -m "Use integration machine as artifact repository"
 
 
 # Remove Nexus artifacts
-rm ~/local/sonatype-work/nexus/storage/snapshots/de/itagile/golf/nerd-golf-tracker/1.0-SNAPSHOT/*
+rm $HOME/local/sonatype-work/nexus/storage/snapshots/de/itagile/golf/nerd-golf-tracker/1.0-SNAPSHOT/*
 
+# Remove Jenkins jobs
+rm -rf $HOME/.jenkins/jobs/*

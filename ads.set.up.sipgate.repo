@@ -24,6 +24,11 @@ git commit -am "Init"
 git push origin master
 
 
+# Remove unnecessary SVN stuff
+git rm .svnignore .settings/.svnignore
+git commit -m "Remove unnecessary SVN stuff"
+
+
 # Set this machine as repository
 local_ip="<IP-Adresse>"
 sed -i -e "s/localhost/$local_ip/" build.gradle

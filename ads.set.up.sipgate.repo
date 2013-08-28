@@ -17,7 +17,7 @@ git clone "$repo" "$integration_space"
 cd "$integration_space"
 
 # Setup initial sources
-wget --output-document="$initial_sources" --no-check-certificate https://github.com/it-agile/nerd-golf-tracker/tarball/cuke
+wget --output-document="$initial_sources" --no-check-certificate https://github.com/it-agile/nerd-golf-tracker/tarball/master
 tar -xzf "$initial_sources" --strip-components=1
 git add --all
 git commit -am "Init"

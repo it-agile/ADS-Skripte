@@ -48,7 +48,17 @@ svn ci -m "Ignore build and IDE artifacts"
 
 
 # Set this machine as repository
-local_ip="<IP-Adresse>"
+ipOf() {
+  LC_ALL=C ifconfig "$1" \
+    | grep inet\ addr    \
+    | cut -f 2 -d :      \
+    | cut -f 1 -d " "
+}
+
+local_ip=`ipOf eth0`                                   # First try IP of eth0, if we serve as an internet bridge
+if [ -z $local_ip ]; then local_ip=`ipOf wlan0`; fi    # Next try IP of wlan
+if [ -z $local_ip ]; then local_ip="<IP-Adresse>"; fi  # Fallback: Insert dummy string
+
 sed -i -e "s/localhost/$local_ip/" build.gradle
 svn ci -m "Use integration machine as artifact repository"
 

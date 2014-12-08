@@ -59,7 +59,7 @@ local_ip=`ipOf eth0`                                   # First try IP of eth0, i
 if [ -z $local_ip ]; then local_ip=`ipOf wlan0`; fi    # Next try IP of wlan
 if [ -z $local_ip ]; then local_ip="<IP-Adresse>"; fi  # Fallback: Insert dummy string
 
-sed -i -e "s/localhost/$local_ip/" build.gradle
+sed -i -e "s/localhost/$local_ip/" build.gradle gradle/wrapper/gradle-wrapper.properties
 svn ci -m "Use integration machine as artifact repository"
 
 

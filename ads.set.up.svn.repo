@@ -64,8 +64,9 @@ svn ci -m "Use integration machine as artifact repository"
 
 
 nexus_storage="$HOME/local/sonatype-work/nexus/storage"
+
 # Download Gradle unless already present
-gradle_version="2.2.1"
+gradle_version=$(grep 'gradleVersion =' build.gradle | cut -d\' -f 2)
 gradle_dist_path="$nexus_storage/releases/org/gradle/gradle/$gradle_version/gradle-$gradle_version-all.zip"
 if [ ! -f $gradle_dist_path ]; then
     wget --output-document="$gradle_dist_path" "https://services.gradle.org/distributions/gradle-$gradle_version-all.zip"

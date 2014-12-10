@@ -1,0 +1,77 @@
+#!/bin/bash
+
+repo_basename=nerd-golf-tracker
+repo="$HOME/git/$repo_basename.git"
+initial_sources=/tmp/it-agile-nerd-golf-tracker.tar.gz
+workspace="$HOME/integration_space/$repo_basename"
+
+# Init repo
+rm -rf "$repo"
+mkdir -p "$repo"
+git init --bare "$repo"
+
+# Setup dir for importing sources
+rm -rf "$workspace"
+mkdir -p "$workspace"
+cd "$workspace"
+cd ..
+git clone "$repo"
+cd "$workspace"
+
+# Import initial sources
+wget --output-document="$initial_sources" --no-check-certificate https://github.com/it-agile/nerd-golf-tracker/tarball/master
+tar -xzf "$initial_sources" --strip-components=1
+
+git add --all
+git commit -m 'initial commit'
+git push -u origin master
+
+####################################################################
+# Set this machine as repository
+####################################################################
+
+ipOf() {
+  LC_ALL=C ifconfig "$1" \
+    | grep inet\ addr    \
+    | cut -f 2 -d :      \
+    | cut -f 1 -d " "
+}
+
+local_ip=`ipOf eth0`                                   # First try IP of eth0, if we serve as an internet bridge
+if [ -z $local_ip ]; then local_ip=`ipOf wlan0`; fi    # Next try IP of wlan
+if [ -z $local_ip ]; then local_ip="<IP-Adresse>"; fi  # Fallback: Insert dummy string
+
+sed -i -e "s/localhost/$local_ip/" build.gradle gradle/wrapper/gradle-wrapper.properties
+git add --all
+git commit -m 'Use integration machine as artifact repository'
+git push origin master
+
+####################################################################
+# Nexus
+####################################################################
+
+nexus_storage="$HOME/local/sonatype-work/nexus/storage"
+
+# Download Gradle unless already present
+gradle_version=$(grep 'gradleVersion =' build.gradle | cut -d\' -f 2)
+
+gradle_dist_group_path="$nexus_storage/releases/org/gradle/gradle/$gradle_version"
+mkdir -p "$gradle_dist_group_path"
+
+gradle_dist_artifact_path="$gradle_dist_group_path/gradle-$gradle_version-all.zip"
+if [ ! -f $gradle_dist_artifact_path ]; then
+    wget --output-document="$gradle_dist_artifact_path" "https://services.gradle.org/distributions/gradle-$gradle_version-all.zip"
+fi
+
+
+# Remove Nexus artifacts
+rm -f "$nexus_storage/snapshots/de/itagile/golf/nerd-golf-tracker/1.0-SNAPSHOT"/*
+
+
+####################################################################
+# misc
+####################################################################
+
+# Remove Jenkins jobs
+rm -rf $HOME/.jenkins/jobs/*
+

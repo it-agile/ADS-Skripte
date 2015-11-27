@@ -1,0 +1,27 @@
+#!/bin/bash
+
+repo_basename=nerd-golf-tracker-NET
+repo="$HOME/git/$repo_basename.git"
+initial_sources=/tmp/it-agile-nerd-golf-tracker-NET.tar.gz
+workspace="$HOME/integration_space/$repo_basename"
+
+# Init repo
+rm -rf "$repo"
+mkdir -p "$repo"
+git init --bare "$repo"
+
+# Setup dir for importing sources
+rm -rf "$workspace"
+mkdir -p "$workspace"
+cd "$workspace"
+cd ..
+git clone "$repo"
+cd "$workspace"
+
+# Import initial sources
+wget --output-document="$initial_sources" --no-check-certificate https://github.com/it-agile/nerd-golf-tracker.NET/tarball/master
+tar -xzf "$initial_sources" --strip-components=1
+
+git add --all
+git commit -m 'initial commit'
+git push -u origin master

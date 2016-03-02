@@ -1,0 +1,20 @@
+#!/bin/sh
+
+SERVER="$1"
+
+if [ -z "$SERVER" ]; then
+    echo Run with
+    echo "  $0 GIT-REPO-HOST"
+
+    exit 1
+fi
+
+RUNDIR=`mktemp -d -t ngt.XXXX`
+cd "$RUNDIR"
+
+git clone ssh://csd@$SERVER/home/csd/git/nerd-golf-tracker.git
+cd nerd-golf-tracker
+git archive --format zip --output ~/nerd-golf-tracker.zip master
+
+cd - > /dev/null
+rm -rf "$RUNDIR"

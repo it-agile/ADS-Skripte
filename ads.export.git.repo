@@ -9,7 +9,7 @@ if [ -z "$SERVER" ]; then
     exit 1
 fi
 
-RUNDIR=`mktemp -d -t ngt.XXXX`
+RUNDIR=`mktemp -d -t ngt-repo.XXXX`
 cd "$RUNDIR"
 
 git clone ssh://csd@$SERVER/home/csd/git/nerd-golf-tracker.git

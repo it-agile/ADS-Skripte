@@ -2,8 +2,18 @@
 
 repo_basename=nerd-golf-tracker
 repo="$HOME/git/$repo_basename.git"
-initial_sources=/tmp/it-agile-nerd-golf-tracker.tar.gz
+tarball_timestamp=$(date +"%m_%d_%Y")
+tarball_name=it-agile-nerd-golf-tracker.tar.gz
+initial_sources=/tmp/$tarball_name
 workspace="$HOME/integration_space/$repo_basename"
+
+# Import initial sources
+wget --output-document="$initial_sources" --no-check-certificate https://github.com/it-agile/nerd-golf-tracker/tarball/master
+
+# Copies last used archives, if you do not have a internet connection, could use
+# an older version, copy to /tmp and do not use wget
+mkdir "tarball_archive"
+cp $initial_sources "tarball_archive/$tarball_name.$tarball_timestamp"
 
 # Init repo
 rm -rf "$repo"
@@ -18,8 +28,6 @@ cd ..
 git clone "$repo"
 cd "$workspace"
 
-# Import initial sources
-wget --output-document="$initial_sources" --no-check-certificate https://github.com/it-agile/nerd-golf-tracker/tarball/master
 tar -xzf "$initial_sources" --strip-components=1
 
 git add --all

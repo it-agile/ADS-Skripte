@@ -66,6 +66,10 @@ gradle_version=$(grep 'gradleVersion =' build.gradle | cut -d\' -f 2)
 gradle_dist_group_path="$nexus_storage/releases/org/gradle/gradle/$gradle_version"
 mkdir -p "$gradle_dist_group_path"
 
+gradle_dist_artifact_path="$gradle_dist_group_path/gradle-$gradle_version-bin.zip"
+if [ ! -f $gradle_dist_artifact_path ]; then
+    wget --output-document="$gradle_dist_artifact_path" "https://services.gradle.org/distributions/gradle-$gradle_version-bin.zip"
+fi
 gradle_dist_artifact_path="$gradle_dist_group_path/gradle-$gradle_version-all.zip"
 if [ ! -f $gradle_dist_artifact_path ]; then
     wget --output-document="$gradle_dist_artifact_path" "https://services.gradle.org/distributions/gradle-$gradle_version-all.zip"
